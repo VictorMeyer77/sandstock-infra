@@ -39,10 +39,10 @@ resource "azurerm_linux_web_app" "erp" {
     }
 
     active_directory_v2 {
-      client_id            = var.app_client_id
+      client_id            = local.main_application_id
       tenant_auth_endpoint = "https://login.microsoftonline.com/${var.tenant_id}"
-      allowed_audiences    = ["api://${var.environment}${var.project}erp"]
-      allowed_applications = [var.app_client_id]
+      allowed_audiences    = ["api://${var.environment}-${var.project}-wap-erp"]
+      allowed_applications = [local.main_application_id]
     }
 
   }
