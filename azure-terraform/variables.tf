@@ -18,11 +18,6 @@ variable "deploy_client_secret" {
   description = "(Required) Azure Deploy Application client secret"
 }
 
-#variable "app_client_id" {
-#  type        = string
-#  description = "(Required) Azure Deploy Application client ID"
-#}
-
 variable "environment" {
   type        = string
   description = "(Required) Environment name"
