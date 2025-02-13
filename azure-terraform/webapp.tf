@@ -1,4 +1,4 @@
-locals  {
+locals {
   erp_login_url = "https://${var.environment}-${var.project}-wap-erp.azurewebsites.net/.auth/login/aad/callback"
 }
 
@@ -37,7 +37,7 @@ resource "azurerm_linux_web_app" "erp" {
 
     login {
       token_store_enabled = true
-      logout_endpoint = "https://dev-sandstock.azurewebsites.net/logout"
+      logout_endpoint     = "https://${var.environment}-${var.project}.azurewebsites.net/logout"
     }
 
     active_directory_v2 {

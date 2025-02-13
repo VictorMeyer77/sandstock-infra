@@ -50,9 +50,13 @@ resource "azuread_service_principal" "sp" {
   app_role_assignment_required = false
 }
 
-resource "azuread_application_password" "app_secret" {
-  application_id = azuread_application.app.id
+resource "time_rotating" "password_rotation" {
+  rotation_days = 30
 }
 
-# add rotation
-
+resource "azuread_application_password" "app_secret" {
+  application_id = azuread_application.app.id
+  rotate_when_changed = {
+    rotation = time_rotating.password_rotation.id
+  }
+}
