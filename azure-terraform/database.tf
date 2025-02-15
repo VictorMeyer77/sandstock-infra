@@ -3,18 +3,16 @@ resource "azurerm_postgresql_flexible_server" "sql_server" {
   resource_group_name           = azurerm_resource_group.rg.name
   location                      = azurerm_resource_group.rg.location
   version                       = "16"
+  delegated_subnet_id           = azurerm_subnet.sql_subnet.id
+  private_dns_zone_id           = azurerm_private_dns_zone.psql_dns.id
+  public_network_access_enabled = false
   administrator_login           = "psql_admin"
   administrator_password        = var.sql_db_admin_password
+  zone                          = "1"
   storage_mb                    = 32768
   sku_name                      = "B_Standard_B1ms"
-  public_network_access_enabled = true
-  zone                          = "1"
-
-  authentication {
-    active_directory_auth_enabled = false
-    password_auth_enabled         = true
-  }
-
+  storage_tier                  = "P4"
+  depends_on                    = [azurerm_private_dns_zone_virtual_network_link.psql_vnet_link]
 }
 
 resource "azurerm_postgresql_flexible_server_database" "erp-db" {
