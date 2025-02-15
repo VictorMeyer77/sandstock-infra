@@ -8,12 +8,12 @@ variable "tenant_id" {
   description = "(Required) Azure tenant ID"
 }
 
-variable "client_id" {
+variable "deploy_client_id" {
   type        = string
   description = "(Required) Azure Deploy Application client ID"
 }
 
-variable "client_secret" {
+variable "deploy_client_secret" {
   type        = string
   description = "(Required) Azure Deploy Application client secret"
 }
