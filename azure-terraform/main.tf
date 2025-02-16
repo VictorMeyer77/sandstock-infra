@@ -26,8 +26,6 @@ provider "azuread" {
   client_secret = var.deploy_client_secret
 }
 
-data "azurerm_client_config" "current" {} # used ?
-
 
 resource "azurerm_resource_group" "rg" {
   name     = "${var.environment}-${var.project}-rg"

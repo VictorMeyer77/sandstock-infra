@@ -48,6 +48,8 @@ resource "azuread_application" "app" {
 resource "azuread_service_principal" "sp" {
   client_id                    = azuread_application.app.client_id
   app_role_assignment_required = false
+
+  depends_on = [azuread_application_password.app_secret]
 }
 
 resource "time_rotating" "password_rotation" {
