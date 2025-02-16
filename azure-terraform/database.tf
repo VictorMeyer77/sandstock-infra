@@ -13,6 +13,7 @@ resource "azurerm_postgresql_flexible_server" "sql_server" {
   sku_name                      = "B_Standard_B1ms"
   storage_tier                  = "P4"
   depends_on                    = [azurerm_private_dns_zone_virtual_network_link.psql_vnet_link]
+  tags                          = var.tags
 }
 
 resource "azurerm_postgresql_flexible_server_database" "erp-db" {
