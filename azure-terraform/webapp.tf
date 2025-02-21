@@ -47,6 +47,6 @@ resource "azurerm_linux_web_app" "erp" {
       allowed_applications = [data.azuread_application.app.client_id]
     }
   }
-
+  virtual_network_subnet_id = azurerm_subnet.erp_subnet.id
   tags = var.tags
 }
