@@ -45,3 +45,9 @@ variable "sql_db_admin_password" {
   sensitive   = true
   default     = null
 }
+
+variable "containers" {
+  type        = list(string)
+  description = "List of containers to create in storage"
+  default     = ["raw", "bronze", "silver", "gold"]
+}
