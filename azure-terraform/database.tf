@@ -20,3 +20,9 @@ resource "azurerm_mssql_database" "erp_db" {
   geo_backup_enabled = false
   zone_redundant     = false
 }
+
+resource "azurerm_mssql_virtual_network_rule" "sql_vnet_rule" {
+  name      = "${var.environment}-${var.project}-sql-vnet-rule"
+  server_id = azurerm_mssql_server.sql_server.id
+  subnet_id = azurerm_subnet.erp_subnet.id
+}
