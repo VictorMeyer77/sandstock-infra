@@ -48,5 +48,5 @@ resource "azurerm_linux_web_app" "erp" {
     }
   }
   virtual_network_subnet_id = azurerm_subnet.erp_subnet.id
-  tags = var.tags
+  tags                      = var.tags
 }
