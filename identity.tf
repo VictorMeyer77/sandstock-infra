@@ -2,6 +2,8 @@ data "azuread_application" "app" {
   client_id = azuread_application.app.client_id
 }
 
+# Application for web apps users
+
 resource "random_uuid" "widgets_scope_id" {}
 
 resource "azuread_application" "app" {
@@ -61,4 +63,12 @@ resource "azuread_application_password" "app_secret" {
   rotate_when_changed = {
     rotation = time_rotating.password_rotation.id
   }
+}
+
+# Roles
+
+resource "azurerm_role_assignment" "adf_blob_role" {
+  scope                = azurerm_storage_account.storage.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_data_factory.adf.identity[0].principal_id
 }
