@@ -31,6 +31,14 @@ resource "azurerm_subnet" "erp_subnet" {
   }
 }
 
+resource "azurerm_subnet" "sto_subnet" {
+  name                 = "${var.environment}-${var.project}-sto-subnet"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.0.3.0/24"]
+  service_endpoints    = ["Microsoft.Sql", "Microsoft.Storage"]
+}
+
 resource "azurerm_private_dns_zone" "sql_dns" {
   name                = "${var.environment}.${var.project}.sqlazure.database.azure.com"
   resource_group_name = azurerm_resource_group.rg.name
@@ -54,3 +62,18 @@ resource "azurerm_private_endpoint" "sql_endpoint" {
     private_dns_zone_ids = [azurerm_private_dns_zone.sql_dns.id]
   }
 }
+
+
+#resource "azurerm_private_endpoint" "sto_endpoint" {
+#  name                = "${var.environment}-${var.project}-sto-endpoint"
+#  location            = azurerm_resource_group.rg.location
+#  resource_group_name = azurerm_resource_group.rg.name
+#  subnet_id           = azurerm_subnet.sto_subnet.id
+#
+#  private_service_connection {
+#    name                           = "${var.environment}-${var.project}-storage-connection"
+#    private_connection_resource_id = azurerm_storage_account.storage.id
+#    subresource_names              = ["blob"]
+#    is_manual_connection           = false
+#  }
+#}
