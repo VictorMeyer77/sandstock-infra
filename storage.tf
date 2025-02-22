@@ -36,7 +36,7 @@ resource "azurerm_key_vault" "kv" {
 
 # Access Policies
 
-resource "azurerm_key_vault_access_policy" "adf_kv_policy" {
+resource "azurerm_key_vault_access_policy" "tenant_kv_policy" {
   key_vault_id = azurerm_key_vault.kv.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id

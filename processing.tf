@@ -55,8 +55,31 @@ resource "azurerm_data_factory_linked_service_key_vault" "adf_kv" {
 # Datasets
 
 resource "azurerm_data_factory_dataset_azure_sql_table" "erp_tables" {
-  name              = "${var.environment}-${var.project}-erp-tables"
+  name              = "${var.environment}_erp_tables"
   data_factory_id   = azurerm_data_factory.adf.id
   linked_service_id = azurerm_data_factory_linked_service_azure_sql_database.adf_sql.id
   schema            = azurerm_mssql_database.erp_db.name
+
+  parameters = {
+    tableName = ""
+  }
+
+  table = "@dataset().tableName"
+
+}
+
+resource "azurerm_data_factory_dataset_azure_blob" "sto_dataset" {
+  name                = "${var.environment}_sto_dataset"
+  data_factory_id     = azurerm_data_factory.adf.id
+  linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.adf_sto.name
+
+
+  path     = "@concat(dataset().container, '/', dataset().folderPath)"
+  filename = "@dataset().fileName"
+
+  parameters = {
+    container  = "raw"
+    folderPath = "folder/"
+    fileName   = "file.csv"
+  }
 }
