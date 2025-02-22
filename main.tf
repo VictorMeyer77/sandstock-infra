@@ -34,3 +34,9 @@ resource "azurerm_resource_group" "rg" {
   location = var.resource_group_location
   tags     = var.tags
 }
+
+resource "azurerm_resource_group" "rg_network" {
+  name     = "${var.environment}-${var.project}-rg-nwk"
+  location = var.resource_group_location
+  tags     = var.tags
+}
