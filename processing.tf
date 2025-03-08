@@ -7,6 +7,14 @@ resource "azurerm_data_factory" "adf" {
   identity {
     type = "SystemAssigned"
   }
+
+  github_configuration {
+    account_name       = var.adf_github_account
+    branch_name        = var.environment
+    repository_name    = var.adf_github_repository
+    root_folder        = "/"
+    publishing_enabled = true
+  }
 }
 
 resource "azurerm_data_factory_integration_runtime_azure" "adf_runtime" {

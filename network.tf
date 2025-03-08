@@ -90,17 +90,3 @@ resource "azurerm_data_factory_managed_private_endpoint" "adf_to_sto" {
     azurerm_data_factory.adf
   ]
 }
-
-#resource "azurerm_private_endpoint" "sto_endpoint" {
-#  name                = "${var.environment}-${var.project}-sto-endpoint"
-#  location            = azurerm_resource_group.rg.location
-#  resource_group_name = azurerm_resource_group.rg.name
-#  subnet_id           = azurerm_subnet.sto_subnet.id
-#
-#  private_service_connection {
-#    name                           = "${var.environment}-${var.project}-storage-connection"
-#    private_connection_resource_id = azurerm_storage_account.storage.id
-#    subresource_names              = ["blob"]
-#    is_manual_connection           = false
-#  }
-#}

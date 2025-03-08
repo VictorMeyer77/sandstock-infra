@@ -75,4 +75,9 @@ resource "azurerm_key_vault_secret" "db_usr_pwd" {
   content_type = "Password of ${azurerm_mssql_server.sql_server.administrator_login} on azure sql ${azurerm_mssql_server.sql_server.name}"
   value        = var.sql_db_admin_password
   key_vault_id = azurerm_key_vault.kv.id
+
+  depends_on = [
+    azurerm_key_vault_access_policy.tenant_kv_policy
+  ]
+
 }
