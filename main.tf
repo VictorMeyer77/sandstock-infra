@@ -8,6 +8,10 @@ terraform {
       source  = "hashicorp/azuread"
       version = "~> 3.1.0"
     }
+    databricks = {
+      source  = "databricks/databricks"
+      version = "~> 1.69.0"
+    }
   }
 }
 
@@ -26,6 +30,14 @@ provider "azuread" {
   tenant_id     = var.tenant_id
   client_id     = var.deploy_client_id
   client_secret = var.deploy_client_secret
+}
+
+provider "databricks" {
+  host                        = azurerm_databricks_workspace.dbk.workspace_url
+  azure_workspace_resource_id = azurerm_databricks_workspace.dbk.id
+  azure_client_id             = var.deploy_client_id
+  azure_client_secret         = var.deploy_client_secret
+  azure_tenant_id             = var.tenant_id
 }
 
 

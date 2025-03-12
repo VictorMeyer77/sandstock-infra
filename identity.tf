@@ -35,16 +35,16 @@ resource "azuread_application" "app" {
     }
   }
 
-  web {
-    homepage_url  = "https://${var.environment}-${var.project}.azurewebsites.net"
-    logout_url    = "https://${var.environment}-${var.project}.azurewebsites.net/logout"
-    redirect_uris = [local.erp_login_url]
+  #web {
+  #  homepage_url  = "https://${var.environment}-${var.project}.azurewebsites.net"
+  #  logout_url    = "https://${var.environment}-${var.project}.azurewebsites.net/logout"
+  #  redirect_uris = [local.erp_login_url]
 
-    implicit_grant {
-      access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
-    }
-  }
+  #  implicit_grant {
+  #    access_token_issuance_enabled = true
+  #    id_token_issuance_enabled     = true
+  #  }
+  #}
 }
 
 resource "azuread_service_principal" "sp" {
@@ -65,10 +65,40 @@ resource "azuread_application_password" "app_secret" {
   }
 }
 
+
+# Databricks App
+
+resource "azuread_application" "dbk_app" {
+  display_name = "${var.environment}-${var.project}-dbk-app"
+}
+
+resource "azuread_service_principal" "dbk_app_sp" {
+  client_id                    = azuread_application.dbk_app.client_id
+  app_role_assignment_required = false
+
+  depends_on = [azuread_application_password.app_secret]
+}
+
+resource "azuread_service_principal_password" "dbk_app_sp_pwd" {
+  service_principal_id = azuread_service_principal.dbk_app_sp.id
+}
+
 # Roles
 
-resource "azurerm_role_assignment" "adf_blob_role" {
+#resource "azurerm_role_assignment" "adf_blob_role" {
+#  scope                = azurerm_storage_account.storage.id
+#  role_definition_name = "Storage Blob Data Contributor"
+#  principal_id         = azurerm_data_factory.adf.identity[0].principal_id
+#}
+
+#resource "azurerm_role_assignment" "dtk_role" {
+#  scope                = azurerm_databricks_workspace.dbk.id
+#  role_definition_name = "Contributor"
+#  principal_id         = var.deploy_client_id
+#}
+
+resource "azurerm_role_assignment" "drk_blob_role" {
   scope                = azurerm_storage_account.storage.id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = azurerm_data_factory.adf.identity[0].principal_id
+  principal_id         = azuread_service_principal.dbk_app_sp.object_id
 }
