@@ -118,46 +118,46 @@ resource "azurerm_private_dns_zone" "sql_dns" {
 
 # Endpoints
 
-#resource "azurerm_private_endpoint" "sql_endpoint" {
-#  name                = "${var.environment}-${var.project}-sql-endpoint"
-#  location            = azurerm_resource_group.rg_network.location
-#  resource_group_name = azurerm_resource_group.rg_network.name
-#  subnet_id           = azurerm_subnet.sql_subnet.id
-#
-#  private_service_connection {
-#    name                           = "${var.environment}-${var.project}-sql-connection"
-#    private_connection_resource_id = azurerm_mssql_server.sql_server.id
-#    subresource_names              = ["sqlServer"]
-#    is_manual_connection           = false
-#  }
-#
-#  private_dns_zone_group {
-#    name                 = "${var.environment}-${var.project}-sql-dns-zone-group"
-#    private_dns_zone_ids = [azurerm_private_dns_zone.sql_dns.id]
-#  }
-#}
+resource "azurerm_private_endpoint" "sql_endpoint" {
+  name                = "${var.environment}-${var.project}-sql-endpoint"
+  location            = azurerm_resource_group.rg_network.location
+  resource_group_name = azurerm_resource_group.rg_network.name
+  subnet_id           = azurerm_subnet.sql_subnet.id
 
-#resource "azurerm_data_factory_managed_private_endpoint" "adf_to_sql" {
-#  name               = "${var.environment}-${var.project}-adf-to-sql"
-#  data_factory_id    = azurerm_data_factory.adf.id
-#  target_resource_id = azurerm_mssql_server.sql_server.id
-#  subresource_name   = "sqlServer"
-#
-#  depends_on = [
-#    azurerm_data_factory.adf
-#  ]
-#}
-#
-#resource "azurerm_data_factory_managed_private_endpoint" "adf_to_sto" {
-#  name               = "${var.environment}-${var.project}-adf-to-sto"
-#  data_factory_id    = azurerm_data_factory.adf.id
-#  target_resource_id = azurerm_storage_account.storage.id
-#  subresource_name   = "blob" # dfs ?
-#
-#  depends_on = [
-#    azurerm_data_factory.adf
-#  ]
-#}
+  private_service_connection {
+    name                           = "${var.environment}-${var.project}-sql-connection"
+    private_connection_resource_id = azurerm_mssql_server.sql_server.id
+    subresource_names              = ["sqlServer"]
+    is_manual_connection           = false
+  }
+
+  private_dns_zone_group {
+    name                 = "${var.environment}-${var.project}-sql-dns-zone-group"
+    private_dns_zone_ids = [azurerm_private_dns_zone.sql_dns.id]
+  }
+}
+
+resource "azurerm_data_factory_managed_private_endpoint" "adf_to_sql" {
+  name               = "${var.environment}-${var.project}-adf-to-sql"
+  data_factory_id    = azurerm_data_factory.adf.id
+  target_resource_id = azurerm_mssql_server.sql_server.id
+  subresource_name   = "sqlServer"
+
+  depends_on = [
+    azurerm_data_factory.adf
+  ]
+}
+
+resource "azurerm_data_factory_managed_private_endpoint" "adf_to_sto" {
+  name               = "${var.environment}-${var.project}-adf-to-sto"
+  data_factory_id    = azurerm_data_factory.adf.id
+  target_resource_id = azurerm_storage_account.storage.id
+  subresource_name   = "blob" # dfs ?
+
+  depends_on = [
+    azurerm_data_factory.adf
+  ]
+}
 
 resource "azurerm_private_endpoint" "sto_end" {
   name                = "${var.environment}-${var.project}-sto-end"
