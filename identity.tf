@@ -1,13 +1,13 @@
-data "azuread_application" "app" {
-  client_id = azuread_application.app.client_id
+data "azuread_application" "web_app" {
+  client_id = azuread_application.web_app.client_id
 }
 
 # Application for web apps users
 
 resource "random_uuid" "widgets_scope_id" {}
 
-resource "azuread_application" "app" {
-  display_name     = "${var.environment}-${var.project}"
+resource "azuread_application" "web_app" {
+  display_name     = "${var.environment}-${var.project}-web-app"
   identifier_uris  = ["api://${var.environment}-${var.project}"]
   sign_in_audience = "AzureADMyOrg"
 
@@ -47,19 +47,19 @@ resource "azuread_application" "app" {
   }
 }
 
-resource "azuread_service_principal" "sp" {
-  client_id                    = azuread_application.app.client_id
+resource "azuread_service_principal" "web_app_sp" {
+  client_id                    = azuread_application.web_app.client_id
   app_role_assignment_required = false
 
-  depends_on = [azuread_application_password.app_secret]
+  depends_on = [azuread_application_password.web_app_secret]
 }
 
 resource "time_rotating" "password_rotation" {
   rotation_days = 30
 }
 
-resource "azuread_application_password" "app_secret" {
-  application_id = azuread_application.app.id
+resource "azuread_application_password" "web_app_secret" {
+  application_id = azuread_application.web_app.id
   rotate_when_changed = {
     rotation = time_rotating.password_rotation.id
   }
@@ -75,8 +75,6 @@ resource "azuread_application" "dbk_app" {
 resource "azuread_service_principal" "dbk_app_sp" {
   client_id                    = azuread_application.dbk_app.client_id
   app_role_assignment_required = false
-
-  depends_on = [azuread_application_password.app_secret]
 }
 
 resource "azuread_service_principal_password" "dbk_app_sp_pwd" {

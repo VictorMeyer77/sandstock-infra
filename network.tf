@@ -41,11 +41,11 @@ resource "azurerm_subnet" "sto_subnet" {
   service_endpoints    = ["Microsoft.Sql", "Microsoft.Storage"]
 }
 
-resource "azurerm_subnet" "sto_pe_subnet" {
-  name                              = "${var.environment}-${var.project}-pe-subnet"
+resource "azurerm_subnet" "sto_dbk_subnet" {
+  name                              = "${var.environment}-${var.project}-sto-dbk-subnet"
   resource_group_name               = azurerm_resource_group.rg_network.name
   virtual_network_name              = azurerm_virtual_network.vnet.name
-  address_prefixes                  = ["10.0.6.0/24"]
+  address_prefixes                  = ["10.0.4.0/24"]
   private_endpoint_network_policies = "Disabled"
 }
 
@@ -53,7 +53,7 @@ resource "azurerm_subnet" "dbk_pub_subnet" {
   name                 = "${var.environment}-${var.project}-dbk-pub-subnet"
   resource_group_name  = azurerm_resource_group.rg_network.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.0.4.0/24"]
+  address_prefixes     = ["10.0.5.0/24"]
 
   delegation {
     name = "databricks"
@@ -72,7 +72,7 @@ resource "azurerm_subnet" "dbk_pri_subnet" {
   name                 = "${var.environment}-${var.project}-dbk-pri-subnet"
   resource_group_name  = azurerm_resource_group.rg_network.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.0.5.0/24"]
+  address_prefixes     = ["10.0.6.0/24"]
 
   private_endpoint_network_policies = "Enabled"
 
@@ -118,8 +118,8 @@ resource "azurerm_private_dns_zone" "sql_dns" {
 
 # Endpoints
 
-resource "azurerm_private_endpoint" "sql_endpoint" {
-  name                = "${var.environment}-${var.project}-sql-endpoint"
+resource "azurerm_private_endpoint" "sql_pe" {
+  name                = "${var.environment}-${var.project}-sql-pe"
   location            = azurerm_resource_group.rg_network.location
   resource_group_name = azurerm_resource_group.rg_network.name
   subnet_id           = azurerm_subnet.sql_subnet.id
@@ -137,8 +137,8 @@ resource "azurerm_private_endpoint" "sql_endpoint" {
   }
 }
 
-resource "azurerm_data_factory_managed_private_endpoint" "adf_to_sql" {
-  name               = "${var.environment}-${var.project}-adf-to-sql"
+resource "azurerm_data_factory_managed_private_endpoint" "adf_sql_pe" {
+  name               = "${var.environment}-${var.project}-adf-sql-pe"
   data_factory_id    = azurerm_data_factory.adf.id
   target_resource_id = azurerm_mssql_server.sql_server.id
   subresource_name   = "sqlServer"
@@ -148,11 +148,11 @@ resource "azurerm_data_factory_managed_private_endpoint" "adf_to_sql" {
   ]
 }
 
-resource "azurerm_data_factory_managed_private_endpoint" "adf_to_sto" {
-  name               = "${var.environment}-${var.project}-adf-to-sto"
+resource "azurerm_data_factory_managed_private_endpoint" "adf_sto_pe" {
+  name               = "${var.environment}-${var.project}-adf-sto-pe"
   data_factory_id    = azurerm_data_factory.adf.id
   target_resource_id = azurerm_storage_account.storage.id
-  subresource_name   = "blob" # dfs ?
+  subresource_name   = "dfs"
 
   depends_on = [
     azurerm_data_factory.adf
@@ -170,11 +170,11 @@ resource "azurerm_data_factory_managed_private_endpoint" "adf_dbk_pe" {
   ]
 }
 
-resource "azurerm_private_endpoint" "sto_end" {
-  name                = "${var.environment}-${var.project}-sto-end"
+resource "azurerm_private_endpoint" "sto_dbk_pe" {
+  name                = "${var.environment}-${var.project}-sto-dbk-pe"
   location            = azurerm_resource_group.rg_network.location
   resource_group_name = azurerm_resource_group.rg_network.name
-  subnet_id           = azurerm_subnet.sto_pe_subnet.id
+  subnet_id           = azurerm_subnet.sto_dbk_subnet.id
 
   private_service_connection {
     name                           = "${var.environment}-${var.project}-sto-connection"

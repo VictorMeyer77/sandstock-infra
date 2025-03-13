@@ -41,10 +41,10 @@ resource "azurerm_linux_web_app" "erp" {
     }
 
     active_directory_v2 {
-      client_id            = data.azuread_application.app.client_id
+      client_id            = data.azuread_application.web_app.client_id
       tenant_auth_endpoint = "https://login.microsoftonline.com/${var.tenant_id}"
       allowed_audiences    = ["api://${var.environment}-${var.project}-wap-erp"]
-      allowed_applications = [data.azuread_application.app.client_id]
+      allowed_applications = [data.azuread_application.web_app.client_id]
     }
   }
   virtual_network_subnet_id = azurerm_subnet.erp_subnet.id
