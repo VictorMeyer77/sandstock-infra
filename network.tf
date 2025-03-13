@@ -42,10 +42,10 @@ resource "azurerm_subnet" "sto_subnet" {
 }
 
 resource "azurerm_subnet" "sto_pe_subnet" {
-  name                 = "${var.environment}-${var.project}-pe-subnet"
-  resource_group_name  = azurerm_resource_group.rg_network.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.0.6.0/24"]
+  name                              = "${var.environment}-${var.project}-pe-subnet"
+  resource_group_name               = azurerm_resource_group.rg_network.name
+  virtual_network_name              = azurerm_virtual_network.vnet.name
+  address_prefixes                  = ["10.0.6.0/24"]
   private_endpoint_network_policies = "Disabled"
 }
 
@@ -153,6 +153,17 @@ resource "azurerm_data_factory_managed_private_endpoint" "adf_to_sto" {
   data_factory_id    = azurerm_data_factory.adf.id
   target_resource_id = azurerm_storage_account.storage.id
   subresource_name   = "blob" # dfs ?
+
+  depends_on = [
+    azurerm_data_factory.adf
+  ]
+}
+
+resource "azurerm_data_factory_managed_private_endpoint" "adf_dbk_pe" {
+  name               = "${var.environment}-${var.project}-adf-dbk-pe"
+  data_factory_id    = azurerm_data_factory.adf.id
+  target_resource_id = azurerm_databricks_workspace.dbk.id
+  subresource_name   = "databricks_ui_api"
 
   depends_on = [
     azurerm_data_factory.adf

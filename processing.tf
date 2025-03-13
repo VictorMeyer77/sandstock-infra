@@ -57,10 +57,10 @@ resource "databricks_cluster" "shared_autoscaling" {
 
   spark_conf = {
     "spark.databricks.io.cache.enabled" : true
-    "spark.hadoop.fs.azure.account.auth.type.${azurerm_storage_account.storage.name}.dfs.core.windows.net" = "OAuth"
-    "spark.hadoop.fs.azure.account.oauth.provider.type.${azurerm_storage_account.storage.name}.dfs.core.windows.net" = "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider"
-    "spark.hadoop.fs.azure.account.oauth2.client.id.${azurerm_storage_account.storage.name}.dfs.core.windows.net" = azuread_application.dbk_app.client_id
-    "spark.hadoop.fs.azure.account.oauth2.client.secret.${azurerm_storage_account.storage.name}.dfs.core.windows.net" = "{{secrets/${databricks_secret_scope.secret_scope.name}/${azurerm_key_vault_secret.dbk_app_client_secret.name}}}"
+    "spark.hadoop.fs.azure.account.auth.type.${azurerm_storage_account.storage.name}.dfs.core.windows.net"              = "OAuth"
+    "spark.hadoop.fs.azure.account.oauth.provider.type.${azurerm_storage_account.storage.name}.dfs.core.windows.net"    = "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider"
+    "spark.hadoop.fs.azure.account.oauth2.client.id.${azurerm_storage_account.storage.name}.dfs.core.windows.net"       = azuread_application.dbk_app.client_id
+    "spark.hadoop.fs.azure.account.oauth2.client.secret.${azurerm_storage_account.storage.name}.dfs.core.windows.net"   = "{{secrets/${databricks_secret_scope.secret_scope.name}/${azurerm_key_vault_secret.dbk_app_client_secret.name}}}"
     "spark.hadoop.fs.azure.account.oauth2.client.endpoint.${azurerm_storage_account.storage.name}.dfs.core.windows.net" = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/oauth2/token"
   }
 
@@ -140,6 +140,18 @@ resource "azurerm_data_factory_linked_service_key_vault" "adf_kv" {
   data_factory_id          = azurerm_data_factory.adf.id
   key_vault_id             = azurerm_key_vault.kv.id
   integration_runtime_name = azurerm_data_factory_integration_runtime_azure.adf_runtime.name
+}
+
+resource "azurerm_data_factory_linked_service_azure_databricks" "adf_dbk" {
+  name                       = "${var.environment}-${var.project}-adf-dbk"
+  data_factory_id            = azurerm_data_factory.adf.id
+  adb_domain                 = "https://${azurerm_databricks_workspace.dbk.workspace_url}"
+  msi_work_space_resource_id = azurerm_databricks_workspace.dbk.id
+  existing_cluster_id        = databricks_cluster.shared_autoscaling.cluster_id
+
+  depends_on = [
+    databricks_cluster.shared_autoscaling
+  ]
 }
 
 # Datasets
