@@ -19,7 +19,7 @@ resource "azurerm_databricks_workspace" "dbk" {
   name                        = "${var.environment}-${var.project}-dbk"
   resource_group_name         = azurerm_resource_group.rg.name
   location                    = azurerm_resource_group.rg.location
-  managed_resource_group_name = "${var.environment}-${var.project}-dbk-managed"
+  managed_resource_group_name = "${var.environment}-${var.project}-dbk-mng"
   sku                         = "premium"
 
   custom_parameters {
@@ -90,7 +90,7 @@ resource "azurerm_data_factory" "adf" {
 
   github_configuration {
     account_name       = var.adf_github_account
-    branch_name        = var.environment
+    branch_name        = "main"
     repository_name    = var.adf_github_repository
     root_folder        = "/"
     publishing_enabled = true
@@ -125,14 +125,16 @@ resource "azurerm_data_factory_linked_service_azure_sql_database" "adf_sql" {
 
 }
 
-resource "azurerm_data_factory_linked_service_azure_blob_storage" "adf_sto" {
+resource "azurerm_data_factory_linked_service_data_lake_storage_gen2" "adf_sto" {
   name                     = "${var.environment}-${var.project}-adf-sto"
   data_factory_id          = azurerm_data_factory.adf.id
   integration_runtime_name = azurerm_data_factory_integration_runtime_azure.adf_runtime.name
-  service_endpoint         = azurerm_storage_account.storage.primary_blob_endpoint
+  url                      = azurerm_storage_account.storage.primary_dfs_endpoint
+  use_managed_identity     = true
 
-  use_managed_identity = true
-
+  #depends_on = [
+  #  azurerm_storage_account.storage
+  #]
 }
 
 resource "azurerm_data_factory_linked_service_key_vault" "adf_kv" {
@@ -140,6 +142,10 @@ resource "azurerm_data_factory_linked_service_key_vault" "adf_kv" {
   data_factory_id          = azurerm_data_factory.adf.id
   key_vault_id             = azurerm_key_vault.kv.id
   integration_runtime_name = azurerm_data_factory_integration_runtime_azure.adf_runtime.name
+
+  #depends_on = [
+  #  azurerm_key_vault.kv
+  #]
 }
 
 resource "azurerm_data_factory_linked_service_azure_databricks" "adf_dbk" {
@@ -156,32 +162,50 @@ resource "azurerm_data_factory_linked_service_azure_databricks" "adf_dbk" {
 
 # Datasets
 
-resource "azurerm_data_factory_dataset_azure_sql_table" "erp_tables" {
-  name              = "${var.environment}_erp_tables"
-  data_factory_id   = azurerm_data_factory.adf.id
-  linked_service_id = azurerm_data_factory_linked_service_azure_sql_database.adf_sql.id
-  schema            = azurerm_mssql_database.erp_db.name
+resource "azurerm_data_factory_custom_dataset" "erp_table" {
+  name            = "${var.environment}_erp_table"
+  data_factory_id = azurerm_data_factory.adf.id
+  type            = "AzureSqlTable"
+  linked_service {
+    name = azurerm_data_factory_linked_service_azure_sql_database.adf_sql.name
+  }
+  folder = "ERP"
 
   parameters = {
-    tableName = ""
+    table_name = "table"
   }
 
-  table = "@dataset().tableName"
+  type_properties_json = <<JSON
+{
+    "table": {
+        "value": "@dataset().table_name",
+        "type": "Expression"
+    }
+}
+JSON
 
 }
 
-resource "azurerm_data_factory_dataset_azure_blob" "sto_dataset" {
+
+resource "azurerm_data_factory_dataset_parquet" "sto_dataset" {
   name                = "${var.environment}_sto_dataset"
   data_factory_id     = azurerm_data_factory.adf.id
-  linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.adf_sto.name
+  linked_service_name = azurerm_data_factory_linked_service_data_lake_storage_gen2.adf_sto.name
+  folder              = "Storage"
+  compression_codec   = "snappy"
 
-
-  path     = "@concat(dataset().container, '/', dataset().folderPath)"
-  filename = "@dataset().fileName"
+  azure_blob_fs_location {
+    dynamic_file_system_enabled = true
+    dynamic_path_enabled        = true
+    dynamic_filename_enabled    = true
+    file_system                 = "@dataset().container"
+    path                        = "@dataset().folder_path"
+    filename                    = "@dataset().file_name"
+  }
 
   parameters = {
-    container  = "raw"
-    folderPath = "folder/"
-    fileName   = "file.csv"
+    container   = "container"
+    folder_path = "folder/"
+    file_name   = "file.parquet"
   }
 }
