@@ -2,8 +2,6 @@ data "azuread_application" "web_app" {
   client_id = azuread_application.web_app.client_id
 }
 
-# Application for web apps users
-
 resource "random_uuid" "widgets_scope_id" {}
 
 resource "azuread_application" "web_app" {
@@ -63,40 +61,4 @@ resource "azuread_application_password" "web_app_secret" {
   rotate_when_changed = {
     rotation = time_rotating.password_rotation.id
   }
-}
-
-
-# Databricks App
-
-resource "azuread_application" "dbk_app" {
-  display_name = "${var.environment}-${var.project}-dbk-app"
-}
-
-resource "azuread_service_principal" "dbk_app_sp" {
-  client_id                    = azuread_application.dbk_app.client_id
-  app_role_assignment_required = false
-}
-
-resource "azuread_service_principal_password" "dbk_app_sp_pwd" {
-  service_principal_id = azuread_service_principal.dbk_app_sp.id
-}
-
-# Roles
-
-resource "azurerm_role_assignment" "adf_blob_role" {
-  scope                = azurerm_storage_account.storage.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = azurerm_data_factory.adf.identity[0].principal_id
-}
-
-resource "azurerm_role_assignment" "adf_dbk_role" {
-  scope                = azurerm_databricks_workspace.dbk.id
-  role_definition_name = "Contributor"
-  principal_id         = azurerm_data_factory.adf.identity[0].principal_id
-}
-
-resource "azurerm_role_assignment" "dbk_blob_role" {
-  scope                = azurerm_storage_account.storage.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = azuread_service_principal.dbk_app_sp.object_id
 }
