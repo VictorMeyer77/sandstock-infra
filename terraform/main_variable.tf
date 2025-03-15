@@ -38,26 +38,3 @@ variable "tags" {
   description = "(Required) Map of tags to attach to resources."
   default     = {}
 }
-
-variable "sql_db_admin_password" {
-  type        = string
-  description = "(Required) The administrator password of the SQL logical server."
-  sensitive   = true
-  default     = null
-}
-
-variable "containers" {
-  type        = list(string)
-  description = "(Optional) List of containers to create in storage"
-  default     = ["raw", "bronze", "silver", "gold"]
-}
-
-variable "adf_github_account" {
-  type        = string
-  description = "(Required) User name of Github ADF repository."
-}
-
-variable "adf_github_repository" {
-  type        = string
-  description = "(Required) Name of Github ADF repository."
-}
