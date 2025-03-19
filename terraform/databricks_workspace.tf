@@ -1,17 +1,3 @@
-data "databricks_node_type" "node_type" {
-  local_disk = true
-  depends_on = [
-    azurerm_databricks_workspace.dbk
-  ]
-}
-
-data "databricks_spark_version" "spark_version" {
-  long_term_support = true
-  depends_on = [
-    azurerm_databricks_workspace.dbk
-  ]
-}
-
 resource "azurerm_databricks_workspace" "dbk" {
   name                        = "${var.environment}-${var.project}-dbk"
   resource_group_name         = azurerm_resource_group.rg.name

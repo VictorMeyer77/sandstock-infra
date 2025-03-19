@@ -1,7 +1,7 @@
 resource "databricks_cluster" "shared_autoscaling" {
   cluster_name            = "Shared Autoscaling"
-  spark_version           = data.databricks_spark_version.spark_version.id
-  node_type_id            = data.databricks_node_type.node_type.id
+  spark_version           = var.dbk_spark_version
+  node_type_id            = var.dbk_node_type
   autotermination_minutes = 20
 
   autoscale {

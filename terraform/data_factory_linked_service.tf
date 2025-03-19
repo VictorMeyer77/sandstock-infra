@@ -32,7 +32,7 @@ resource "azurerm_data_factory_linked_service_azure_databricks" "adf_dbk" {
   adb_domain                 = "https://${azurerm_databricks_workspace.dbk.workspace_url}"
   msi_work_space_resource_id = azurerm_databricks_workspace.dbk.id
   existing_cluster_id        = databricks_cluster.shared_autoscaling.cluster_id
-  integration_runtime_name = azurerm_data_factory_integration_runtime_azure.adf_runtime.name
+  integration_runtime_name   = azurerm_data_factory_integration_runtime_azure.adf_runtime.name
 
   depends_on = [
     databricks_cluster.shared_autoscaling
