@@ -1,5 +1,9 @@
 # sandstock-infra
 
+
+This repository manages all Azure resources of sandstock, a sandbox azure project to gather and maintain all good practices in a Azure solution.
+
+
 ## Manual action
 
 ### Approve Private Managed Endpoints
@@ -12,9 +16,12 @@
 
 ### Blob Storage
 
+- [ ] Prevent destroy
+
 ### Azure SQL
 
 - [ ] Add init script to create user with permissions
+- [ ] Prevent destroy
 
 ### Datafactory
 
@@ -32,6 +39,9 @@
 ### Network
 
 ### Key Vault
+
+- [ ] Add an Azure Automation to automatically rotate Databricks Application Password
+- [ ] Prevent destroy
 
 ### Web App
 
