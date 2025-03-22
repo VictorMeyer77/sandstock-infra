@@ -8,5 +8,7 @@ resource "azuread_service_principal" "dbk_app_sp" {
 }
 
 resource "azuread_service_principal_password" "dbk_app_sp_pwd" {
+  display_name         = "${var.environment}-${var.project}-dbk-app-secret"
   service_principal_id = azuread_service_principal.dbk_app_sp.id
+  end_date             = formatdate("YYYY-MM-DD'T'hh:mm:ss'Z'", timeadd(timestamp(), "720h")) # 30 days
 }

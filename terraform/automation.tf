@@ -15,7 +15,7 @@ resource "azurerm_automation_source_control" "aut_git" {
   name                    = "${var.environment}-${var.project}-aut-git"
   automation_account_id   = azurerm_automation_account.aut.id
   folder_path             = "runbook"
-  automatic_sync          = true
+  automatic_sync          = false
   publish_runbook_enabled = true
 
   security {

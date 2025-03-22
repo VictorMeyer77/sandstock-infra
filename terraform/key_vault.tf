@@ -43,3 +43,16 @@ resource "azurerm_key_vault_access_policy" "adf_kv_policy" {
     "Get", "List"
   ]
 }
+
+resource "azurerm_key_vault_access_policy" "aut_kv_policy" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = azurerm_automation_account.aut.identity[0].tenant_id
+  object_id = azurerm_automation_account.aut.identity[0].principal_id
+
+  secret_permissions = [
+    "List",
+    "Set",
+    "Get",
+  ]
+}
