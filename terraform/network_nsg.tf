@@ -1,7 +1,7 @@
 resource "azurerm_network_security_group" "nsg_dbk" {
   name                = "${var.environment}-${var.project}-dbk-nsg"
-  resource_group_name = azurerm_resource_group.rg_network.name
-  location            = azurerm_resource_group.rg_network.location
+  resource_group_name = azurerm_resource_group.rg_net.name
+  location            = azurerm_resource_group.rg_net.location
   tags                = var.tags
 }
 

@@ -1,12 +1,12 @@
 resource "azurerm_private_dns_zone" "sql_dns" {
   name                = "${var.environment}.${var.project}.sqlazure.database.azure.com"
-  resource_group_name = azurerm_resource_group.rg_network.name
+  resource_group_name = azurerm_resource_group.rg_net.name
 }
 
 resource "azurerm_private_endpoint" "sql_pe" {
   name                = "${var.environment}-${var.project}-sql-pe"
-  location            = azurerm_resource_group.rg_network.location
-  resource_group_name = azurerm_resource_group.rg_network.name
+  location            = azurerm_resource_group.rg_net.location
+  resource_group_name = azurerm_resource_group.rg_net.name
   subnet_id           = azurerm_subnet.sql_subnet.id
 
   private_service_connection {
@@ -57,8 +57,8 @@ resource "azurerm_data_factory_managed_private_endpoint" "adf_dbk_pe" {
 
 resource "azurerm_private_endpoint" "sto_dbk_pe" {
   name                = "${var.environment}-${var.project}-sto-dbk-pe"
-  location            = azurerm_resource_group.rg_network.location
-  resource_group_name = azurerm_resource_group.rg_network.name
+  location            = azurerm_resource_group.rg_net.location
+  resource_group_name = azurerm_resource_group.rg_net.name
   subnet_id           = azurerm_subnet.sto_dbk_subnet.id
 
   private_service_connection {

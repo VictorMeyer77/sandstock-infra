@@ -2,7 +2,7 @@ resource "azurerm_databricks_workspace" "dbk" {
   name                        = "${var.environment}-${var.project}-dbk"
   resource_group_name         = azurerm_resource_group.rg.name
   location                    = azurerm_resource_group.rg.location
-  managed_resource_group_name = "${var.environment}-${var.project}-dbk-mng"
+  managed_resource_group_name = "${var.environment}-${var.project}-rg-dbk"
   sku                         = "premium"
 
   custom_parameters {

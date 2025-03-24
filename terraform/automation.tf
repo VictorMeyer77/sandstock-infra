@@ -1,7 +1,7 @@
 resource "azurerm_automation_account" "aut" {
   name                = "${var.environment}-${var.project}-aut"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg_aut.location
+  resource_group_name = azurerm_resource_group.rg_aut.name
   sku_name            = "Basic"
 
   identity {

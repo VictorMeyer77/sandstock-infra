@@ -6,11 +6,21 @@ This repository manages all Azure resources of sandstock, a sandbox azure projec
 
 ## Manual action
 
-### Approve Private Managed Endpoints
+### Data Factory
 
-1. In databricks "Networking" section, approve ADF endpoint.
+#### Approve Private Managed Endpoints
+
+1. In Databricks "Networking" section, approve ADF endpoint.
 2. In Azure SQL "Networking" section, approve ADF endpoint.
 3. In Azure Storage "Networking" section, approve ADF endpoint.
+
+### Azure Automation
+
+#### Add Entra ID role on Azure Automation Identity
+
+1. Copy the Azure Automation object_id in "Identity" section.
+2. In Entra ID "Roles and administrators", add the "Application Administrator" role for the Azure Automation SystemAssigned Identity.
+3. Launch automation source control synchronization
 
 ## TODO
 
@@ -25,7 +35,7 @@ This repository manages all Azure resources of sandstock, a sandbox azure projec
 
 ### Datafactory
 
-- [ ] configure triggers
+- [ ] Configure triggers
 
 ### Databricks
 
@@ -34,19 +44,19 @@ This repository manages all Azure resources of sandstock, a sandbox azure projec
 ### Identity
 
 - [ ] Create a group for web app accessing
-- [ ] Databricks app add password rotation
+- [x] Add an Azure Automation to automatically rotate Databricks Application Password
 
 ### Network
 
 ### Key Vault
 
-- [ ] Add an Azure Automation to automatically rotate Databricks Application Password
 - [ ] Prevent destroy
+- [ ] Add in virtual network and open managed private endpoint (not available yet with Azure Automation)
 
 ### Web App
 
 - [ ] WebApp -> Azure SQL: store password and access password with key vault
-- [ ] Configure development slot
+- [ ] Configure deployment slot
 
 ### Administration
 
