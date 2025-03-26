@@ -14,6 +14,9 @@ This repository manages all Azure resources of sandstock, a sandbox azure projec
 2. In Azure SQL "Networking" section, approve ADF endpoint.
 3. In Azure Storage "Networking" section, approve ADF endpoint.
 
+All components of Azure Data Factory are managed within terraform, except the Pipelines.
+See https://github.com/VictorMeyer77/sandstock-adf for more details.
+
 ### Azure Automation
 
 #### Add Entra ID role on Azure Automation Identity
@@ -21,6 +24,10 @@ This repository manages all Azure resources of sandstock, a sandbox azure projec
 1. Copy the Azure Automation object_id in "Identity" section.
 2. In Entra ID "Roles and administrators", add the "Application Administrator" role for the Azure Automation SystemAssigned Identity.
 3. Launch automation source control synchronization
+
+### Web App
+
+Few minutes after the end of the `terraform apply`, release Web App with https://github.com/VictorMeyer77/sandstock.
 
 ## TODO
 
@@ -43,8 +50,9 @@ This repository manages all Azure resources of sandstock, a sandbox azure projec
 
 ### Identity
 
-- [ ] Create a group for web app accessing
+- [x] Create a group for web app accessing
 - [x] Add an Azure Automation to automatically rotate Databricks Application Password
+- [ ] Scale up to premium account and enable [SSPR](https://learn.microsoft.com/en-us/entra/identity/authentication/tutorial-enable-sspr)
 
 ### Network
 
@@ -57,6 +65,7 @@ This repository manages all Azure resources of sandstock, a sandbox azure projec
 
 - [ ] WebApp -> Azure SQL: store password and access password with key vault
 - [ ] Configure deployment slot
+- [ ] Use https
 
 ### Administration
 
