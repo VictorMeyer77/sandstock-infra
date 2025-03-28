@@ -23,7 +23,7 @@ See https://github.com/VictorMeyer77/sandstock-adf for more details.
 
 1. Copy the Azure Automation object_id in "Identity" section.
 2. In Entra ID "Roles and administrators", add the "Application Administrator" role for the Azure Automation SystemAssigned Identity.
-3. Launch automation source control synchronization
+3. Launch automation source control synchronization (cf: https://github.com/VictorMeyer77/sandstock-runbook)
 
 ### Web App
 
