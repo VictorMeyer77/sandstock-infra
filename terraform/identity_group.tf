@@ -1,7 +1,7 @@
 # Web applications group
 
 resource "azuread_group" "web_app_grp" {
-  display_name            = "${var.environment}-${var.project}-grp-web-app"
+  display_name            = "${var.environment}-${var.project}-grp-wap-app"
   description             = "User group for accessing web applications."
   owners                  = [data.azuread_client_config.current.object_id]
   security_enabled        = true

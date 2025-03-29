@@ -37,8 +37,9 @@ Few minutes after the end of the `terraform apply`, release Web App with https:/
 
 ### Azure SQL
 
-- [ ] Add init script to create user with permissions
+- [x] Add init script to create user with permissions
 - [ ] Prevent destroy
+- [ ] Distinct user for Web app and ADF
 
 ### Datafactory
 
@@ -46,7 +47,7 @@ Few minutes after the end of the `terraform apply`, release Web App with https:/
 
 ### Databricks
 
-- [ ] distinct dev cluster and prod cluster
+- [ ] distinct dev cluster and run cluster
 
 ### Identity
 

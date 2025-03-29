@@ -1,7 +1,19 @@
-resource "azurerm_key_vault_secret" "db_usr_pwd" {
+resource "azurerm_key_vault_secret" "sql_srv_admin_pwd" {
   name         = "${azurerm_mssql_server.sql_server.name}-password"
   content_type = "Password of ${azurerm_mssql_server.sql_server.administrator_login} on azure sql ${azurerm_mssql_server.sql_server.name}"
-  value        = var.sql_db_admin_password
+  value        = random_password.sql_srv_admin_pwd.result
+  key_vault_id = azurerm_key_vault.kv.id
+
+  depends_on = [
+    azurerm_key_vault_access_policy.tenant_kv_policy
+  ]
+
+}
+
+resource "azurerm_key_vault_secret" "db_erp_usr_pwd" {
+  name         = "${replace(azurerm_mssql_database.erp_db.name, "_", "-")}-db-password"
+  content_type = "Password of ${local.erp_db_usr_name} on azure sql ${azurerm_mssql_database.erp_db.name}"
+  value        = random_password.sql_erp_usr_pwd.result
   key_vault_id = azurerm_key_vault.kv.id
 
   depends_on = [

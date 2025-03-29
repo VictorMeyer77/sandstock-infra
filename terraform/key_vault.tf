@@ -56,3 +56,14 @@ resource "azurerm_key_vault_access_policy" "aut_kv_policy" {
     "Get",
   ]
 }
+
+resource "azurerm_key_vault_access_policy" "wap_kv_policy" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id =  azurerm_linux_web_app.erp.identity[0].tenant_id
+  object_id = azurerm_linux_web_app.erp.identity[0].principal_id
+
+  secret_permissions = [
+    "Get", "List"
+  ]
+}

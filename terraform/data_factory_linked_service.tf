@@ -3,11 +3,11 @@ resource "azurerm_data_factory_linked_service_azure_sql_database" "adf_sql" {
   data_factory_id          = azurerm_data_factory.adf.id
   integration_runtime_name = azurerm_data_factory_integration_runtime_azure.adf_runtime.name
 
-  connection_string = "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name},1433;Database=${azurerm_mssql_database.erp_db.name};User ID=sql_admin;Encrypt=True;Connection Timeout=30;"
+  connection_string = "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name},1433;Database=${azurerm_mssql_database.erp_db.name};User ID=${local.erp_db_usr_name};Encrypt=True;Connection Timeout=30;"
 
   key_vault_password {
     linked_service_name = azurerm_data_factory_linked_service_key_vault.adf_kv.name
-    secret_name         = azurerm_key_vault_secret.db_usr_pwd.name
+    secret_name         = azurerm_key_vault_secret.db_erp_usr_pwd.name
   }
 }
 

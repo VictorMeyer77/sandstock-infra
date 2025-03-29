@@ -19,6 +19,10 @@ data "azurerm_client_config" "current" {}
 
 data "azuread_client_config" "current" {}
 
+data "http" "local_public_ip" {
+  url = "https://ipv4.icanhazip.com"
+}
+
 provider "azurerm" {
   features {}
 

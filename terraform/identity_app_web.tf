@@ -5,7 +5,7 @@ data "azuread_application" "web_app" {
 resource "random_uuid" "widgets_scope_id" {}
 
 resource "azuread_application" "web_app" {
-  display_name     = "${var.environment}-${var.project}-web-app"
+  display_name     = "${var.environment}-${var.project}-wap-app"
   identifier_uris  = ["api://${var.environment}-${var.project}"]
   sign_in_audience = "AzureADMyOrg"
 
