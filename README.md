@@ -44,16 +44,20 @@ Few minutes after the end of the `terraform apply`, release Web App with https:/
 ### Datafactory
 
 - [ ] Configure triggers
+- [ ] Bug: linked service only works in live mode
 
 ### Databricks
 
-- [ ] distinct dev cluster and run cluster
+- [ ] Distinct dev cluster and run cluster
+- [ ] Activate Unity Catalog
+- [ ] Configure databricks repository
 
 ### Identity
 
 - [x] Create a group for web app accessing
 - [x] Add an Azure Automation to automatically rotate Databricks Application Password
 - [ ] Scale up to premium account and enable [SSPR](https://learn.microsoft.com/en-us/entra/identity/authentication/tutorial-enable-sspr)
+- [ ] Process authentication logs
 
 ### Network
 
@@ -72,3 +76,4 @@ Few minutes after the end of the `terraform apply`, release Web App with https:/
 
 - [ ] Add start/shut down auto for web app, azure sql, databricks cluster...
 - [ ] Logs monitoring
+- [ ] Configure CI-CD to deploy infra with GitHub action
