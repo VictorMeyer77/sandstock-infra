@@ -64,7 +64,7 @@ Few minutes after the end of the `terraform apply`, release Web App with https:/
 
 ### Web App
 
-- [ ] WebApp -> Azure SQL: store password and access password with key vault
+- [x] WebApp -> Azure SQL: store password and access password with key vault
 - [ ] Configure deployment slot
 - [ ] Use https
 

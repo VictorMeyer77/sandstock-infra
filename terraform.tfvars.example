@@ -1,0 +1,36 @@
+# Project configuration
+
+project                 = "sandstock"
+environment             = "dev"
+resource_group_location = "France Central"
+
+# Deployment credentials
+
+deploy_client_id        = ""
+deploy_client_secret    = ""
+subscription_id         = ""
+tenant_id               = ""
+
+# Data Factory repository
+
+adf_github_account      = "VictorMeyer77"
+adf_github_repository   = "sandstock-adf"
+
+# Runbook repository
+
+aut_github_repository   = "https://github.com/VictorMeyer77/sandstock-runbook.git"
+aut_github_token        = ""
+
+# Databricks cluster configuration
+
+dbk_node_type           = "Standard_F4s"
+dbk_spark_version       = "15.4.x-scala2.12"
+
+# Users allowed to access web applications
+
+web_app_group_users = [{
+  user_principal_name : "test_user@your_domain.com",
+  display_name : "Test User"
+  mail : "test_user@outlook.fr"
+}]
+web_app_group_guests = ["guest_email@hotmail.fr"]
