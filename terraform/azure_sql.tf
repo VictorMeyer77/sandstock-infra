@@ -1,9 +1,9 @@
 resource "random_password" "sql_srv_admin_pwd" {
-  length           = 16
-  special         = true
-  upper           = true
-  lower           = true
-  numeric         = true
+  length  = 16
+  special = true
+  upper   = true
+  lower   = true
+  numeric = true
 }
 
 resource "azurerm_mssql_server" "sql_server" {

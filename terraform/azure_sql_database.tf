@@ -22,11 +22,11 @@ locals {
 }
 
 resource "random_password" "sql_erp_usr_pwd" {
-  length           = 16
-  special         = true
-  upper           = true
-  lower           = true
-  numeric         = true
+  length  = 16
+  special = true
+  upper   = true
+  lower   = true
+  numeric = true
 }
 
 resource "terraform_data" "erp_db_user" {

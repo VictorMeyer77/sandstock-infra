@@ -26,3 +26,11 @@ resource "databricks_secret_scope" "secret_scope" {
     dns_name    = azurerm_key_vault.kv.vault_uri
   }
 }
+
+
+resource "databricks_repo" "dbk_code_repo" {
+  git_provider = "gitHub"
+  url          = "https://github.com/VictorMeyer77/sandstock-databricks"
+  branch       = "main"
+  path         = "/Repos/${var.environment}/sandstock-databricks"
+}
