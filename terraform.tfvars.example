@@ -26,6 +26,10 @@ aut_github_token        = ""
 dbk_node_type           = "Standard_F4s"
 dbk_spark_version       = "15.4.x-scala2.12"
 
+# Storage
+
+containers              = ["raw"]
+
 # Users allowed to access web applications
 
 web_app_group_users = [{
