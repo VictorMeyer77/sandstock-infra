@@ -43,14 +43,15 @@ Few minutes after the end of the `terraform apply`, release Web App with https:/
 
 ### Datafactory
 
-- [ ] Configure triggers
+- [x] Configure triggers
 - [ ] Bug: linked service only works in live mode
+- [ ] Create GitHub action to turn on/off triggers
 
 ### Databricks
 
 - [ ] Distinct dev cluster and run cluster
 - [ ] Activate Unity Catalog
-- [ ] Configure databricks repository
+- [x] Configure databricks repository (cf: https://github.com/VictorMeyer77/sandstock-databricks)
 
 ### Identity
 
