@@ -14,7 +14,7 @@ This repository manages all Azure resources of sandstock, a sandbox azure projec
 2. In Azure SQL "Networking" section, approve ADF endpoint.
 3. In Azure Storage "Networking" section, approve ADF endpoint.
 
-All components of Azure Data Factory are managed within terraform, except the Pipelines.
+All components of Azure Data Factory are managed within terraform, except Pipelines and Triggers.
 See https://github.com/VictorMeyer77/sandstock-adf for more details.
 
 ### Azure Automation
@@ -45,7 +45,7 @@ Few minutes after the end of the `terraform apply`, release Web App with https:/
 
 - [x] Configure triggers
 - [ ] Bug: linked service only works in live mode
-- [ ] Create GitHub action to turn on/off triggers
+- [x] Create GitHub action to turn on/off triggers
 
 ### Databricks
 
