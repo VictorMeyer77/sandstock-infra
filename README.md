@@ -44,7 +44,6 @@ Few minutes after the end of the `terraform apply`, release Web App with https:/
 ### Datafactory
 
 - [x] Configure triggers
-- [ ] Bug: linked service only works in live mode
 - [x] Create GitHub action to turn on/off triggers
 
 ### Databricks
