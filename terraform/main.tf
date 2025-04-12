@@ -64,3 +64,9 @@ resource "azurerm_resource_group" "rg_aut" {
   location = var.resource_group_location
   tags     = var.tags
 }
+
+resource "azurerm_resource_group" "rg_log" {
+  name     = "${var.environment}-${var.project}-rg-log"
+  location = var.resource_group_location
+  tags     = var.tags
+}

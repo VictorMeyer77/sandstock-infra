@@ -75,5 +75,5 @@ Few minutes after the end of the `terraform apply`, release Web App with https:/
 ### Administration
 
 - [ ] Add start/shut down auto for web app, azure sql, databricks cluster...
-- [ ] Logs monitoring
+- [x] Logs monitoring
 - [ ] Configure CI-CD to deploy infra with GitHub action
